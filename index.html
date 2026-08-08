@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Grand Theft Auto VI – An Extended Look | Live Countdown</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* =========================
+       CUSTOMIZE THEME HERE
+       ========================= */
+    :root {
+      /* Background */
+      --bg-color: #0b0f19;
+      --bg-gradient: radial-gradient(1200px 800px at 10% -10%, #1b2a44 0%, transparent 60%),
+                    radial-gradient(1000px 700px at 90% 10%, #2b1a3a 0%, transparent 60%),
+                    var(--bg-color);
+
+      /* Card / overlay background */
+      --card-bg: rgba(17, 24, 39, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+
+      /* Text colors */
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+
+      /* Accent colors */
+      --accent-netflix: #e50914;   /* red for Netflix */
+      --accent-youtube: #3ea6ff;   /* blue for YouTube */
+      --accent-live: #22c55e;      /* green for "LIVE" */
+
+      /* Font */
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg-color);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-size: clamp(26px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      font-size: clamp(14px, 2.5vw, 18px);
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+      backdrop-filter: blur(6px);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .timer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .time-block {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 12px 6px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .time-value {
+      font-family: var(--font-mono);
+      font-size: clamp(22px, 4.5vw, 38px);
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .time-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .status {
+      margin-top: 14px;
+      font-size: 14px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .status.upcoming {
+      color: var(--accent-youtube);
+    }
+
+    .status.live {
+      color: var(--accent-live);
+    }
+
+    .status.done {
+      color: var(--accent-live);
+      opacity: 0.9;
+    }
+
+    .accent-netflix {
+      color: var(--accent-netflix);
+    }
+
+    .accent-youtube {
+      color: var(--accent-youtube);
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.4;
+    }
+
+    a {
+      color: var(--accent-youtube);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================
+       OBS MODE (BROWSER SOURCE)
+       ========================= */
+    body.obs-mode {
+      background: transparent;
+      background-image: none;
+      justify-content: flex-start;
+      padding: 40px;
+    }
+
+    body.obs-mode .container {
+      max-width: 100%;
+    }
+
+    body.obs-mode .header,
+    body.obs-mode .footer-note {
+      display: none;
+    }
+
+    body.obs-mode .grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    body.obs-mode .card {
+      background: rgba(10, 14, 24, 0.75);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    body.obs-mode .time-value {
+      font-size: 56px;
+    }
+
+    body.obs-mode .card-title {
+      font-size: 22px;
+    }
+
+    body.obs-mode .card-sub {
+      font-size: 14px;
+    }
+
+    body.obs-mode .card {
+      border-radius: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title">
+        Grand Theft Auto VI – An Extended Look<br />
+        <span class="accent-netflix">Netflix Premiere</span> &
+        <span class="accent-youtube">YouTube Premiere</span> Countdown
+      </div>
+      <div class="subtitle">
+        Netflix Premiere: <strong>Aug 27, 2026 • 3:00 PM ET / 8:00 PM BST</strong><br />
+        Public on YouTube: <strong>Aug 27, 2026 • 9:00 PM ET</strong> (6 hours later)<br />
+        Both countdowns are for <strong>Grand Theft Auto VI – An Extended Look</strong> on Netflix and YouTube.
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Netflix Premiere Countdown -->
+      <div class="card">
+        <div class="card-title accent-netflix">
+          Netflix Premiere – Grand Theft Auto VI: An Extended Look
+        </div>
+        <div class="card-sub">
+          First exclusive viewing on Netflix
+        </div>
+        <div class="timer" id="netflix-timer">
+          <div class="time-block">
+            <div class="time-value" id="nf-days">0</div>
+            <div class="time-label">Days</div>
+          </div>
+          <div class="time-block">
+            <div class="time-value" id="nf-hours">0</div>
+            <div class="time-label">Hours</div>
+          </div>
+          <div class="time-block">
+            <div class="time-value" id="nf-mins">0</div>
+            <div class="time-label">Minutes</div>
+          </div>
+          <div class="time-block">
+            <div class="time-value" id="nf-secs">0</div>
+            <div class="time-label">Seconds</div>
+          </div>
+        </div>
+        <div class="status upcoming" id="nf-status">
+          Loading...
+        </div>
+      </div>
+
+      <!-- YouTube Premiere Countdown -->
+      <div class="card">
+        <div class="card-title accent-youtube">
+          YouTube Premiere – Grand Theft Auto VI: An Extended Look
+        </div>
+        <div class="card-sub">
+          Public release on YouTube (6 hours after Netflix)
+        </div>
+        <div class="timer" id="youtube-timer">
+          <div class="time-block">
+            <div class="time-value" id="yt-days">0</div>
+            <div class="time-label">Days</div>
+          </div>
+          <div class="time-block">
+            <div class="time-value" id="yt-hours">0</div>
+            <div class="time-label">Hours</div>
+          </div>
+          <div class="time-block">
+            <div class="time-value" id="yt-mins">0</div>
+            <div class="time-label">Minutes</div>
+          </div>
+          <div class="time-block">
+            <div class="time-value" id="yt-secs">0</div>
+            <div class="time-label">Seconds</div>
+          </div>
+        </div>
+        <div class="status upcoming" id="yt-status">
+          Loading...
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Both timers track the same content:<br />
+      <strong>Grand Theft Auto VI – An Extended Look</strong>, premiering on Netflix and then on YouTube.
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // CONFIGURE TIMING HERE
+    // =========================
+    //
+    // Event: Grand Theft Auto VI – An Extended Look
+    // Netflix Premiere: August 27, 2026, 3:00 PM ET (UTC-4 in summer)
+    // => 19:00 UTC
+    //
+    // YouTube Public Release: 6 hours later = 9:00 PM ET = 01:00 UTC (Aug 28)
+
+    const premiereUTC = Date.UTC(2026, 7, 27, 19, 0, 0); // month is 0-indexed (7 = August)
+    const youtubeUTC  = premiereUTC + 6 * 60 * 60 * 1000; // +6 hours
+
+    // =========================
+    // MODE DETECTION (OBS)
+    // =========================
+    const params = new URLSearchParams(window.location.search);
+    const isObsMode = params.get('mode') === 'obs';
+    if (isObsMode) {
+      document.body.classList.add('obs-mode');
+    }
+
+    // =========================
+    // ELEMENTS
+    // =========================
+    const nfDaysEl = document.getElementById('nf-days');
+    const nfHoursEl = document.getElementById('nf-hours');
+    const nfMinsEl = document.getElementById('nf-mins');
+    const nfSecsEl = document.getElementById('nf-secs');
+    const nfStatusEl = document.getElementById('nf-status');
+
+    const ytDaysEl = document.getElementById('yt-days');
+    const ytHoursEl = document.getElementById('yt-hours');
+    const ytMinsEl = document.getElementById('yt-mins');
+    const ytSecsEl = document.getElementById('yt-secs');
+    const ytStatusEl = document.getElementById('yt-status');
+
+    // =========================
+    // TIMER LOGIC
+    // =========================
+    function formatNumber(num, pad = false) {
+      if (!pad) return String(num);
+      return String(num).padStart(2, '0');
+    }
+
+    function updateTimer(targetUTC, daysEl, hoursEl, minsEl, secsEl, statusEl, beforeText, liveText, afterText) {
+      const now = Date.now();
+      const diff = targetUTC - now;
+
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        daysEl.textContent = formatNumber(days);
+        hoursEl.textContent = formatNumber(hours, true);
+        minsEl.textContent = formatNumber(mins, true);
+        secsEl.textContent = formatNumber(secs, true);
+
+        statusEl.textContent = beforeText;
+        statusEl.className = 'status upcoming';
+      } else {
+        daysEl.textContent = '0';
+        hoursEl.textContent = '00';
+        minsEl.textContent = '00';
+        secsEl.textContent = '00';
+
+        statusEl.textContent = liveText;
+        statusEl.className = 'status live';
+      }
+    }
+
+    function tick() {
+      const now = Date.now();
+
+      // Netflix timer logic
+      if (now < premiereUTC) {
+        updateTimer(
+          premiereUTC,
+          nfDaysEl, nfHoursEl, nfMinsEl, nfSecsEl, nfStatusEl,
+          'Until Netflix Premiere',
+          'Netflix Premiere LIVE',
+          'Premiere Complete'
+        );
+      } else if (now < youtubeUTC) {
+        nfDaysEl.textContent = '0';
+        nfHoursEl.textContent = '00';
+        nfMinsEl.textContent = '00';
+        nfSecsEl.textContent = '00';
+        nfStatusEl.textContent = 'Netflix Premiere LIVE';
+        nfStatusEl.className = 'status live';
+      } else {
+        nfDaysEl.textContent = '0';
+        nfHoursEl.textContent = '00';
+        nfMinsEl.textContent = '00';
+        nfSecsEl.textContent = '00';
+        nfStatusEl.textContent = 'Premiere Complete';
+        nfStatusEl.className = 'status done';
+      }
+
+      // YouTube timer logic
+      if (now < youtubeUTC) {
+        updateTimer(
+          youtubeUTC,
+          ytDaysEl, ytHoursEl, ytMinsEl, ytSecsEl, ytStatusEl,
+          'Until YouTube Premiere',
+          'YouTube Premiere LIVE',
+          'Premiere Complete'
+        );
+      } else {
+        ytDaysEl.textContent = '0';
+        ytHoursEl.textContent = '00';
+        ytMinsEl.textContent = '00';
+        ytSecsEl.textContent = '00';
+        ytStatusEl.textContent = 'YouTube Premiere LIVE';
+        ytStatusEl.className = 'status done';
+      }
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
